@@ -2,12 +2,13 @@
 
 The staff dashboard for [FinStack](https://github.com/Fabulouscode/finstack), the open-source fintech backend. Support, risk and finance staff see what's happening across the platform without writing API calls.
 
-**Status:** early. Sign-in, the overview, payments and payment details are built; more screens are on the way (see [Roadmap](#roadmap)).
+**Status:** early. Sign-in, the overview, payments, refunds and payouts are built; more screens are on the way (see [Roadmap](#roadmap)).
 
 ## What it does
 
 - **Overview:** what needs attention (payouts and refunds still processing, open reconciliation items, failed webhooks), what's owed to wallet holders per currency, and users and organizations by status.
 - **Payments:** every payment across the platform, newest first, filterable by status and provider. Each opens a page with its details, timeline and refunds (including why a refund failed).
+- **Refunds and payouts:** platform-wide lists with filters; each payout shows where the money went (masked account), its timeline and why it failed. Finance and risk staff can ask the provider to re-check a stuck payout, and finance can retry a stuck refund. Neither ever sends money twice.
 - **Staff only:** customer accounts are refused at sign-in. What each person can see follows their FinStack role (`support`, `risk`, `finance`, `admin`), enforced by FinStack itself.
 
 ## How it's built
@@ -68,8 +69,8 @@ If FinStack also runs on port 3000, start one of them on another port.
 - [x] Overview
 - [x] Payments list
 - [x] Payment details: timeline, conversion, fees and refunds
-- [ ] Refund and payout details, with retry and sync actions
-- [ ] Refunds and payouts lists
+- [x] Refunds and payouts lists, payout details
+- [x] Safe actions: re-check a payout, retry a refund (shown only to roles allowed to use them)
 - [ ] Users and organizations: search, details, suspend and reactivate
 - [ ] Audit log
 - [ ] Reconciliation items and failed webhooks

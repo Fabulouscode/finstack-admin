@@ -5,6 +5,8 @@ import { requireSession } from '@/lib/dal';
 const NAV = [
   { href: '/', label: 'Overview' },
   { href: '/payments', label: 'Payments' },
+  { href: '/refunds', label: 'Refunds' },
+  { href: '/payouts', label: 'Payouts' },
 ];
 
 export default async function DashboardLayout({

@@ -1,26 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { retryRefund } from '@/app/(dashboard)/actions';
+import { ActionButton } from '@/components/action-button';
+import { Field } from '@/components/field';
 import { StatusPill } from '@/components/status-pill';
+import { Timeline } from '@/components/timeline';
 import { finstack } from '@/lib/dal';
 import { formatDateTime } from '@/lib/dates';
 import { FinStackError } from '@/lib/finstack/auth-api';
 import { formatMoney } from '@/lib/money';
+import { can } from '@/lib/permissions';
 
 export const metadata: Metadata = { title: 'Payment · FinStack Admin' };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-function Field({ label, children, mono }: { label: string; children: React.ReactNode; mono?: boolean }) {
-  return (
-    <div className="flex flex-col gap-0.5 py-2">
-      <dt className="text-xs text-zinc-500">{label}</dt>
-      <dd className={`break-all text-sm ${mono ? 'font-mono text-xs' : ''}`}>
-        {children ?? <span className="text-zinc-400">—</span>}
-      </dd>
-    </div>
-  );
-}
 
 export default async function PaymentPage({
   params,
@@ -46,6 +40,7 @@ export default async function PaymentPage({
     params: { query: { paymentId, limit: 100 } },
   });
 
+  const mayRetry = await can('refunds:manage');
   const timeline: [string, string | null][] = [
     ['Created', payment.createdAt],
     [payment.status === 'failed' ? 'Failed' : 'Completed', payment.completedAt],
@@ -99,17 +94,7 @@ export default async function PaymentPage({
 
         <section className="rounded-lg bg-white p-4 ring-1 ring-zinc-200">
           <h2 className="text-sm font-medium text-zinc-500">Timeline</h2>
-          <ol className="mt-3 flex flex-col gap-3">
-            {timeline.map(([label, at]) => (
-              <li key={label} className="flex gap-3 text-sm">
-                <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${at ? 'bg-emerald-700' : 'bg-zinc-300'}`} />
-                <div>
-                  <p className={at ? '' : 'text-zinc-400'}>{label}</p>
-                  <p className="text-xs text-zinc-500">{at ? formatDateTime(at) : 'Not yet'}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <Timeline steps={timeline} />
         </section>
       </div>
 
@@ -140,7 +125,18 @@ export default async function PaymentPage({
                         <p className="mt-1 text-xs text-red-700">{refund.failureReason}</p>
                       )}
                     </td>
-                    <td className="px-4 py-2"><StatusPill status={refund.status} /></td>
+                    <td className="px-4 py-2">
+                      <StatusPill status={refund.status} />
+                      {mayRetry && refund.status === 'processing' && (
+                        <div className="mt-2">
+                          <ActionButton
+                            action={retryRefund.bind(null, refund.id, payment.id)}
+                            label="Retry"
+                            pendingLabel="Checking…"
+                          />
+                        </div>
+                      )}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-2 text-right tabular-nums">
                       {formatMoney(refund.amount, refund.currency)}
                     </td>
