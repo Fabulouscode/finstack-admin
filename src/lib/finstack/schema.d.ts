@@ -2056,7 +2056,7 @@ export interface components {
              */
             type: "user" | "api_key" | "system";
             /** Format: uuid */
-            id: Record<string, never> | null;
+            id: string | null;
         };
         AuditLogResponseDto: {
             /** Format: uuid */
@@ -2065,7 +2065,7 @@ export interface components {
             action: string;
             actor: components["schemas"]["AuditActorDto"];
             /** Format: uuid */
-            organizationId: Record<string, never> | null;
+            organizationId: string | null;
             /** @example membership */
             targetType: string;
             targetId: string;
@@ -2078,9 +2078,9 @@ export interface components {
             metadata: {
                 [key: string]: unknown;
             };
-            requestId: Record<string, never> | null;
+            requestId: string | null;
             /** @example 203.0.113.7 */
-            ipAddress: Record<string, never> | null;
+            ipAddress: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -2278,11 +2278,11 @@ export interface components {
              */
             scopes: string[];
             /** Format: date-time */
-            lastUsedAt: Record<string, never> | null;
+            lastUsedAt: string | null;
             /** Format: date-time */
-            expiresAt: Record<string, never> | null;
+            expiresAt: string | null;
             /** Format: date-time */
-            revokedAt: Record<string, never> | null;
+            revokedAt: string | null;
             /** Format: date-time */
             createdAt: string;
             /**
@@ -2308,11 +2308,11 @@ export interface components {
              */
             scopes: string[];
             /** Format: date-time */
-            lastUsedAt: Record<string, never> | null;
+            lastUsedAt: string | null;
             /** Format: date-time */
-            expiresAt: Record<string, never> | null;
+            expiresAt: string | null;
             /** Format: date-time */
-            revokedAt: Record<string, never> | null;
+            revokedAt: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -2553,17 +2553,17 @@ export interface components {
              * Format: uuid
              * @description Your wallet involved
              */
-            walletId: Record<string, never> | null;
+            walletId: string | null;
             /** @description Fee charged, if any (added for transfers/payouts, deducted for payments) */
             fee: components["schemas"]["FeeDto"] | null;
             /** @example Dinner split */
-            description: Record<string, never> | null;
+            description: string | null;
             /** @example null */
-            failureCode: Record<string, never> | null;
+            failureCode: string | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            completedAt: Record<string, never> | null;
+            completedAt: string | null;
         };
         TransactionsPageDto: {
             data: components["schemas"]["TransactionResponseDto"][];
@@ -2577,7 +2577,7 @@ export interface components {
             /** @example USD */
             currency: string;
             /** Format: uuid */
-            organizationId: Record<string, never> | null;
+            organizationId: string | null;
             /** @example 30 */
             fixedAmount: number;
             /** @example 150 */
@@ -2585,13 +2585,13 @@ export interface components {
             /** @example 0 */
             minAmount: number;
             /** @example null */
-            maxAmount: Record<string, never> | null;
+            maxAmount: number | null;
             /** @description False once superseded or retired */
             active: boolean;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            supersededAt: Record<string, never> | null;
+            supersededAt: string | null;
         };
         SetFeeRuleRequestDto: {
             /**
@@ -2653,7 +2653,7 @@ export interface components {
             /** @example USD */
             currency: string;
             /** @example 500000 */
-            maxPerTransaction: Record<string, never> | null;
+            maxPerTransaction: number | null;
             /**
              * @description Rolling 24 hours: limits, used and remaining (null = unlimited)
              * @example {
@@ -2687,15 +2687,15 @@ export interface components {
             /** @example USD */
             currency: string;
             /** Format: uuid */
-            organizationId: Record<string, never> | null;
+            organizationId: string | null;
             /** @example 500000 */
-            maxPerTransaction: Record<string, never> | null;
+            maxPerTransaction: number | null;
             /** @example 1000000 */
-            maxDailyAmount: Record<string, never> | null;
+            maxDailyAmount: number | null;
             /** @example 10 */
-            maxDailyCount: Record<string, never> | null;
+            maxDailyCount: number | null;
             /** @example null */
-            maxMonthlyAmount: Record<string, never> | null;
+            maxMonthlyAmount: number | null;
             active: boolean;
             /** Format: date-time */
             createdAt: string;
@@ -2780,12 +2780,12 @@ export interface components {
             /** @example mock */
             provider: string;
             /** @example mock_4f9a2c1e7b3d5a8c */
-            providerReference: Record<string, never> | null;
+            providerReference: string | null;
             /**
              * @description Send the customer here to pay
              * @example https://checkout.mock-provider.test/pay/mock_4f9a2c1e7b3d5a8c
              */
-            authorizationUrl: Record<string, never> | null;
+            authorizationUrl: string | null;
             /**
              * @description Charged amount, minor units
              * @example 1550000
@@ -2801,18 +2801,18 @@ export interface components {
             /** @description Present when the payment is converted into the wallet currency */
             conversion: components["schemas"]["PaymentCreditDto"] | null;
             /** @example null */
-            failureCode: Record<string, never> | null;
+            failureCode: string | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            completedAt: Record<string, never> | null;
+            completedAt: string | null;
             /** @description Taken from what the wallet receives, in the wallet's currency; null when free */
             fee: components["schemas"]["FeeDto"] | null;
             /**
              * Format: date-time
              * @description When the credited money is (or becomes) spendable. Later than `completedAt` under a settlement hold (PAYMENT_SETTLEMENT_DELAY_SECONDS); null until credited.
              */
-            fundsAvailableAt: Record<string, never> | null;
+            fundsAvailableAt: string | null;
             /**
              * @description Still in the wallet's pending balance from this payment (wallet currency, minor units)
              * @example 0
@@ -2922,20 +2922,20 @@ export interface components {
             /** @example paystack */
             provider: string;
             /** @example 3018284 */
-            providerRefundReference: Record<string, never> | null;
+            providerRefundReference: string | null;
             /** @example Customer requested cancellation */
             reason: string;
             /** @example null */
-            failureCode: Record<string, never> | null;
+            failureCode: string | null;
             /**
              * @description Why it failed, including the provider's own message
              * @example null
              */
-            failureReason: Record<string, never> | null;
+            failureReason: string | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            completedAt: Record<string, never> | null;
+            completedAt: string | null;
         };
         AdminRefundsPageDto: {
             data: components["schemas"]["RefundResponseDto"][];
@@ -2981,13 +2981,13 @@ export interface components {
             /** @example 058 */
             bankCode: string;
             /** @example Guaranty Trust Bank */
-            bankName: Record<string, never> | null;
+            bankName: string | null;
             /** @example ADA LOVELACE */
             accountName: string;
             /** @example 6789 */
             accountNumberLast4: string;
             /** @example Main account */
-            label: Record<string, never> | null;
+            label: string | null;
             /**
              * Format: date-time
              * @description Payouts are allowed from this time (cooling-off for new accounts)
@@ -3039,15 +3039,15 @@ export interface components {
             /** @example paystack */
             provider: string;
             /** @example TRF_1ptvuv321ahaa7q */
-            providerReference: Record<string, never> | null;
+            providerReference: string | null;
             /** @example null */
-            failureCode: Record<string, never> | null;
+            failureCode: string | null;
             /** @example null */
-            failureReason: Record<string, never> | null;
+            failureReason: string | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            completedAt: Record<string, never> | null;
+            completedAt: string | null;
         };
         AdminPayoutsPageDto: {
             data: components["schemas"]["PayoutResponseDto"][];
@@ -3080,7 +3080,7 @@ export interface components {
              * @description Null for ledger checks
              * @example paystack
              */
-            provider: Record<string, never> | null;
+            provider: string | null;
             /** Format: date-time */
             periodStart: string;
             /** Format: date-time */
@@ -3104,11 +3104,11 @@ export interface components {
             summary: {
                 [key: string]: unknown;
             };
-            error: Record<string, never> | null;
+            error: string | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
-            finishedAt: Record<string, never> | null;
+            finishedAt: string | null;
         };
         ReconciliationItemResponseDto: {
             /** Format: uuid */
@@ -3122,18 +3122,18 @@ export interface components {
             /** @enum {string} */
             status: "open" | "resolved" | "auto_resolved";
             /** @example trx_9f2c4e1a7b3d5c8e6f0a */
-            reference: Record<string, never> | null;
+            reference: string | null;
             /** Format: uuid */
-            targetId: Record<string, never> | null;
+            targetId: string | null;
             finstack: {
                 [key: string]: unknown;
             } | null;
             provider: {
                 [key: string]: unknown;
             } | null;
-            resolutionNote: Record<string, never> | null;
+            resolutionNote: string | null;
             /** Format: date-time */
-            resolvedAt: Record<string, never> | null;
+            resolvedAt: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -3160,7 +3160,7 @@ export interface components {
             /** @example 2 */
             count: number;
             /** Format: date-time */
-            oldest: Record<string, never> | null;
+            oldest: string | null;
         };
         AttentionDto: {
             processingPayouts: components["schemas"]["InFlightDto"];
@@ -3303,9 +3303,9 @@ export interface components {
              */
             createdAt: string;
             /** Format: uuid */
-            userId: Record<string, never> | null;
+            userId: string | null;
             /** Format: uuid */
-            organizationId: Record<string, never> | null;
+            organizationId: string | null;
         };
         CreateWebhookEndpointRequestDto: {
             /** @example https://api.example.com/finstack/webhooks */
@@ -3326,7 +3326,7 @@ export interface components {
             id: string;
             /** @example https://api.example.com/finstack/webhooks */
             url: string;
-            description: Record<string, never> | null;
+            description: string | null;
             /**
              * @example [
              *       "payment.successful"
@@ -3338,12 +3338,12 @@ export interface components {
              * @description Set when FinStack disabled it (e.g. repeated failures)
              * @example null
              */
-            disabledReason: Record<string, never> | null;
+            disabledReason: string | null;
             /**
              * Format: date-time
              * @description Until when the previous secret still signs (after a rotation)
              */
-            previousSecretExpiresAt: Record<string, never> | null;
+            previousSecretExpiresAt: string | null;
             /** Format: date-time */
             createdAt: string;
             /**
@@ -3357,7 +3357,7 @@ export interface components {
             id: string;
             /** @example https://api.example.com/finstack/webhooks */
             url: string;
-            description: Record<string, never> | null;
+            description: string | null;
             /**
              * @example [
              *       "payment.successful"
@@ -3369,12 +3369,12 @@ export interface components {
              * @description Set when FinStack disabled it (e.g. repeated failures)
              * @example null
              */
-            disabledReason: Record<string, never> | null;
+            disabledReason: string | null;
             /**
              * Format: date-time
              * @description Until when the previous secret still signs (after a rotation)
              */
-            previousSecretExpiresAt: Record<string, never> | null;
+            previousSecretExpiresAt: string | null;
             /** Format: date-time */
             createdAt: string;
         };
@@ -3408,12 +3408,12 @@ export interface components {
             /** @example 1 */
             attempts: number;
             /** @example 200 */
-            lastResponseStatus: Record<string, never> | null;
-            lastError: Record<string, never> | null;
+            lastResponseStatus: number | null;
+            lastError: string | null;
             /** Format: date-time */
-            lastAttemptAt: Record<string, never> | null;
+            lastAttemptAt: string | null;
             /** Format: date-time */
-            deliveredAt: Record<string, never> | null;
+            deliveredAt: string | null;
             /** @description The exact request body */
             payload: {
                 [key: string]: unknown;
@@ -3446,14 +3446,14 @@ export interface components {
             /** @enum {string} */
             status: "received" | "processed" | "failed" | "ignored";
             /** @example credited */
-            outcome: Record<string, never> | null;
+            outcome: string | null;
             /** @example 1 */
             attempts: number;
-            lastError: Record<string, never> | null;
+            lastError: string | null;
             /** Format: date-time */
             receivedAt: string;
             /** Format: date-time */
-            processedAt: Record<string, never> | null;
+            processedAt: string | null;
         };
         QueueStatsDto: {
             /** @example webhooks */

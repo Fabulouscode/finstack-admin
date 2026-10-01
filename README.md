@@ -2,12 +2,12 @@
 
 The staff dashboard for [FinStack](https://github.com/Fabulouscode/finstack), the open-source fintech backend. Support, risk and finance staff see what's happening across the platform without writing API calls.
 
-**Status:** early. Sign-in, the overview and payments are built; more screens are on the way (see [Roadmap](#roadmap)).
+**Status:** early. Sign-in, the overview, payments and payment details are built; more screens are on the way (see [Roadmap](#roadmap)).
 
 ## What it does
 
 - **Overview:** what needs attention (payouts and refunds still processing, open reconciliation items, failed webhooks), what's owed to wallet holders per currency, and users and organizations by status.
-- **Payments:** every payment across the platform, newest first, filterable by status and provider.
+- **Payments:** every payment across the platform, newest first, filterable by status and provider. Each opens a page with its details, timeline and refunds (including why a refund failed).
 - **Staff only:** customer accounts are refused at sign-in. What each person can see follows their FinStack role (`support`, `risk`, `finance`, `admin`), enforced by FinStack itself.
 
 ## How it's built
@@ -67,7 +67,8 @@ If FinStack also runs on port 3000, start one of them on another port.
 - [x] Staff sign-in, sessions and refresh
 - [x] Overview
 - [x] Payments list
-- [ ] Payment, refund and payout details, with retry and sync actions
+- [x] Payment details: timeline, conversion, fees and refunds
+- [ ] Refund and payout details, with retry and sync actions
 - [ ] Refunds and payouts lists
 - [ ] Users and organizations: search, details, suspend and reactivate
 - [ ] Audit log

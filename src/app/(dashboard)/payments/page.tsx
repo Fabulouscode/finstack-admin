@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { StatusPill } from '@/components/status-pill';
 import { finstack } from '@/lib/dal';
+import { formatDateTime } from '@/lib/dates';
 import { formatMoney } from '@/lib/money';
 
 export const metadata: Metadata = { title: 'Payments · FinStack Admin' };
@@ -13,12 +15,6 @@ type Provider = (typeof PROVIDERS)[number];
 
 const pick = <T extends string>(value: string | undefined, allowed: readonly T[]) =>
   allowed.includes(value as T) ? (value as T) : undefined;
-
-const STATUS_STYLE: Record<string, string> = {
-  successful: 'bg-emerald-50 text-emerald-800 ring-emerald-200',
-  failed: 'bg-red-50 text-red-800 ring-red-200',
-  reversed: 'bg-zinc-100 text-zinc-700 ring-zinc-300',
-};
 
 export default async function PaymentsPage({
   searchParams,
@@ -90,14 +86,16 @@ export default async function PaymentsPage({
             {data.data.map((payment) => (
               <tr key={payment.id} className="border-t border-zinc-100">
                 <td className="whitespace-nowrap px-4 py-2 text-zinc-600">
-                  {new Date(payment.createdAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}
+                  {formatDateTime(payment.createdAt)}
                 </td>
-                <td className="px-4 py-2 font-mono text-xs">{payment.reference}</td>
+                <td className="px-4 py-2 font-mono text-xs">
+                  <Link href={`/payments/${payment.id}`} className="underline decoration-zinc-300 underline-offset-2 hover:decoration-zinc-900">
+                    {payment.reference}
+                  </Link>
+                </td>
                 <td className="px-4 py-2">{payment.provider}</td>
                 <td className="px-4 py-2">
-                  <span className={`rounded-full px-2 py-0.5 text-xs ring-1 ${STATUS_STYLE[payment.status] ?? 'bg-amber-50 text-amber-800 ring-amber-200'}`}>
-                    {payment.status}
-                  </span>
+                  <StatusPill status={payment.status} />
                 </td>
                 <td className="whitespace-nowrap px-4 py-2 text-right tabular-nums">
                   {formatMoney(payment.amount, payment.currency)}
