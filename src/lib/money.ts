@@ -18,3 +18,22 @@ export function formatMoney(minor: number, currency: string): string {
     .find((part) => part.type === 'currency')?.value;
   return `${negative ? '-' : ''}${symbol ?? `${currency} `}${grouped}${fraction ? `.${fraction}` : ''}`;
 }
+
+/**
+ * What a person typed ("1,500.50") -> minor units (150050), exactly. Null
+ * for anything that isn't a positive amount the currency can represent:
+ * money is never rounded.
+ */
+export function parseAmount(input: string, currency: string): number | null {
+  const exponent = MINOR_UNITS[currency] ?? 2;
+  const text = input.trim().replace(/,/g, '');
+  const match = /^(\d+)(?:\.(\d+))?$/.exec(text);
+  if (!match) return null;
+  const fraction = (match[2] ?? '').replace(/0+$/, '');
+  if (fraction.length > exponent) return null;
+  const minor =
+    BigInt(match[1] ?? "0") * BigInt(10) ** BigInt(exponent) +
+    BigInt(fraction.padEnd(exponent, '0') || '0');
+  if (minor <= BigInt(0) || minor > BigInt(Number.MAX_SAFE_INTEGER)) return null;
+  return Number(minor);
+}

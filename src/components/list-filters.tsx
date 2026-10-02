@@ -3,8 +3,10 @@ import Link from 'next/link';
 export interface FilterSpec {
   name: string;
   label: string;
-  options: readonly string[];
+  /** Without options: a text search box. */
+  options?: readonly string[];
   value: string | undefined;
+  placeholder?: string;
 }
 
 /** A plain GET form, so filters work without JavaScript and are linkable. */
@@ -15,12 +17,22 @@ export function ListFilters({ basePath, filters }: { basePath: string; filters: 
       {filters.map((filter) => (
         <label key={filter.name} className="flex flex-col gap-1">
           {filter.label}
-          <select name={filter.name} defaultValue={filter.value ?? ''} className="rounded-md border border-zinc-300 bg-white px-2 py-1.5">
-            <option value="">Any</option>
-            {filter.options.map((option) => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
+          {filter.options ? (
+            <select name={filter.name} defaultValue={filter.value ?? ''} className="rounded-md border border-zinc-300 bg-white px-2 py-1.5">
+              <option value="">Any</option>
+              {filter.options.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              name={filter.name}
+              type="search"
+              defaultValue={filter.value ?? ''}
+              placeholder={filter.placeholder}
+              className="w-56 rounded-md border border-zinc-300 bg-white px-2 py-1.5"
+            />
+          )}
         </label>
       ))}
       <button type="submit" className="rounded-md bg-zinc-900 px-3 py-1.5 text-white">Filter</button>

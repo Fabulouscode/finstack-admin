@@ -2,14 +2,23 @@
 
 The staff dashboard for [FinStack](https://github.com/Fabulouscode/finstack), the open-source fintech backend. Support, risk and finance staff see what's happening across the platform without writing API calls.
 
-**Status:** early. Sign-in, the overview, payments, refunds and payouts are built; more screens are on the way (see [Roadmap](#roadmap)).
+**Status:** the first version is complete: every screen on the [roadmap](#roadmap) is built.
 
 ## What it does
 
-- **Overview:** what needs attention (payouts and refunds still processing, open reconciliation items, failed webhooks), what's owed to wallet holders per currency, and users and organizations by status.
-- **Payments:** every payment across the platform, newest first, filterable by status and provider. Each opens a page with its details, timeline and refunds (including why a refund failed).
-- **Refunds and payouts:** platform-wide lists with filters; each payout shows where the money went (masked account), its timeline and why it failed. Finance and risk staff can ask the provider to re-check a stuck payout, and finance can retry a stuck refund. Neither ever sends money twice.
-- **Staff only:** customer accounts are refused at sign-in. What each person can see follows their FinStack role (`support`, `risk`, `finance`, `admin`), enforced by FinStack itself.
+| Section | What staff can see | What they can do (if their role allows) |
+| --- | --- | --- |
+| **Overview** | What needs attention, money owed to wallet holders per currency, users and organizations | Jump straight to stuck payouts, refunds, reconciliation items or failed webhooks |
+| **Payments** | Every payment, with filters; each with its timeline, conversion, fees and refunds | Refund (in full or part) and release held money early, both behind a confirmation |
+| **Refunds** · **Payouts** | Every refund and payout; payouts with their masked bank account and failure reason | Retry a stuck refund; re-check a stuck payout with the provider (neither ever sends money twice) |
+| **Users** · **Organizations** | Search; profile, wallets, memberships and recent payments | Suspend and reactivate; change a staff member's role; freeze and unfreeze wallets |
+| **Audit log** | Every sensitive action, who took it, why, and from where | Filter by action, actor or target |
+| **Reconciliation** | Mismatches between FinStack, the providers and the ledger, in plain words, side by side | Mark resolved with a note |
+| **Webhooks** | Provider webhooks that failed, and the background queues | Replay one after fixing the cause (it can never credit twice) |
+
+- **Staff only.** Customer accounts are refused at sign-in.
+- **Roles decide what shows.** Each section and button appears only if the signed-in person's FinStack role allows it (asked of FinStack through `GET /v1/admin/me`). FinStack enforces every action itself as well.
+- **Consequential actions ask first.** Suspensions, freezes and role changes need a reason, recorded in FinStack's audit log. Money-moving actions also need an explicit acknowledgement, and each refund form carries its own idempotency key, so a double-submitted refund is one refund.
 
 ## How it's built
 
@@ -66,15 +75,14 @@ If FinStack also runs on port 3000, start one of them on another port.
 ## Roadmap
 
 - [x] Staff sign-in, sessions and refresh
-- [x] Overview
-- [x] Payments list
-- [x] Payment details: timeline, conversion, fees and refunds
-- [x] Refunds and payouts lists, payout details
-- [x] Safe actions: re-check a payout, retry a refund (shown only to roles allowed to use them)
-- [ ] Users and organizations: search, details, suspend and reactivate
-- [ ] Audit log
-- [ ] Reconciliation items and failed webhooks
-- [ ] Money-moving actions (refunds, releases) behind confirmation
+- [x] Overview, with links to what needs attention
+- [x] Payments, refunds and payouts: lists and details
+- [x] Users, organizations and wallets: search, details, suspend, reactivate, freeze, roles
+- [x] Audit log
+- [x] Reconciliation items and failed webhooks: resolve and replay
+- [x] Money-moving actions behind confirmation: refunds and early release of held money
+
+Ideas for later: exporting lists to CSV, saved filters, and a dark theme.
 
 ## License
 

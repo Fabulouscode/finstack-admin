@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { retryRefund } from '@/app/(dashboard)/actions';
+import { randomUUID } from 'node:crypto';
+import { createRefund, releaseHold, retryRefund } from '@/app/(dashboard)/actions';
+import { ConfirmForm } from '@/components/confirm-form';
 import { ActionButton } from '@/components/action-button';
 import { Field } from '@/components/field';
 import { StatusPill } from '@/components/status-pill';
@@ -40,7 +42,9 @@ export default async function PaymentPage({
     params: { query: { paymentId, limit: 100 } },
   });
 
-  const mayRetry = await can('refunds:manage');
+  const [mayRetry, mayRelease] = await Promise.all([can('refunds:manage'), can('payments:manage')]);
+  const mayRefund = mayRetry && payment.status === 'successful';
+  const mayEndHold = mayRelease && payment.heldAmount > 0;
   const timeline: [string, string | null][] = [
     ['Created', payment.createdAt],
     [payment.status === 'failed' ? 'Failed' : 'Completed', payment.completedAt],
@@ -97,6 +101,43 @@ export default async function PaymentPage({
           <Timeline steps={timeline} />
         </section>
       </div>
+
+      {(mayRefund || mayEndHold) && (
+        <section className="flex flex-col gap-3 rounded-lg bg-white p-4 ring-1 ring-zinc-200">
+          <h2 className="text-sm font-medium text-zinc-500">Actions</h2>
+          {mayRefund && (
+            <ConfirmForm
+              action={createRefund.bind(null, payment.id, payment.currency, randomUUID())}
+              label="Refund…"
+              confirmLabel="Send refund"
+              danger
+              description={`Sends money back to the customer through ${payment.provider}. The wallet is debited first, so a refund can’t exceed what the wallet holds.`}
+              acknowledge={`I understand this sends money back to the customer and can’t be undone.`}
+            >
+              <label className="flex flex-col gap-1 text-sm">
+                Amount ({payment.currency})
+                <input
+                  name="amount"
+                  inputMode="decimal"
+                  placeholder="Leave empty to refund everything that’s left"
+                  className="w-80 max-w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5"
+                />
+              </label>
+            </ConfirmForm>
+          )}
+          {mayEndHold && (
+            <ConfirmForm
+              action={releaseHold.bind(null, payment.id)}
+              label="Release hold now"
+              confirmLabel="Release"
+              description="Makes the held money spendable before the settlement delay ends. Use when you’re confident there won’t be a chargeback."
+              acknowledge="I understand the money becomes spendable immediately."
+              reasonRequired={false}
+              reasonLabel=""
+            />
+          )}
+        </section>
+      )}
 
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-medium text-zinc-500">Refunds</h2>

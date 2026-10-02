@@ -23,10 +23,8 @@ export function ActionButton({
       >
         {pending ? pendingLabel : label}
       </button>
-      {result && (
-        <span role="status" className={`text-xs ${result.ok ? 'text-emerald-800' : 'text-red-700'}`}>
-          {result.message}
-        </span>
+      {result && !result.ok && (
+        <span role="alert" className="text-xs text-red-700">{result.message}</span>
       )}
     </form>
   );

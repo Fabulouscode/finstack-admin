@@ -6159,7 +6159,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
@@ -7411,7 +7410,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
@@ -7641,7 +7639,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
@@ -7902,7 +7899,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
@@ -8402,7 +8398,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
@@ -8767,7 +8762,6 @@ export interface operations {
         parameters: {
             query?: never;
             header: {
-                "idempotency-key": string;
                 /** @description Unique key per logical operation (e.g. a UUID). Retrying with the same key and body returns the original response (with `Idempotent-Replayed: true`) instead of repeating the operation. Keys expire after IDEMPOTENCY_KEY_TTL_HOURS. */
                 "Idempotency-Key": string;
             };
